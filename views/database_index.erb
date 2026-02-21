@@ -1,0 +1,11 @@
+
+<p>poo</p>
+<h1>Brad is bad</h1>
+<% @teams.each do |team| %>
+  <h2><%= team[:number]%>-<%= team[:name] %></h2>
+  
+  <% notes = DB.from(:notes).where(team_number: team[:number]) %>
+  <% notes.each do |note| %>
+    <%= note %>
+  <% end %>
+<% end %>
