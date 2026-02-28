@@ -6,7 +6,7 @@ DB = Sequel.connect('sqlite://test.sqlite3')
 
 #DB.run("insert into teams values (null, 'West Side Robotics', '467','defense')")
 
-# # DB.run("insert into notes values (null, 'I like Cheeseburger', '67')")
+    # # DB.run("insert into notes values (null, 'I like Cheeseburger', '67')")
 
 # teams = DB.from(:teams)
 

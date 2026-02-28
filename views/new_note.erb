@@ -1,0 +1,24 @@
+<h1>NEW NOTE</h1>
+<form action="/note" method="post">
+    <div>
+        <Label>
+            team_number
+            <input value="<%= @team_number %>" name="team_number" type="text">
+        </Label>
+    </div>
+    <div>
+        <Label>
+            
+            Content
+            <textarea name="content" lines="7"><%= @content %></textarea>
+            
+
+        </Label>
+    </div>
+    
+    
+    
+    
+    
+    <button>submit</button>
+</form>
