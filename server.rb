@@ -1,6 +1,10 @@
 require 'sinatra'
 require_relative 'setup'
 
+configure :production do
+  set :host_authorization, { permitted_hosts: [] }
+end
+
 get "/" do
   @teams = DB.from(:teams)
   erb :index
