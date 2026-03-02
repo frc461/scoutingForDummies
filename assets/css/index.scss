@@ -1,0 +1,32 @@
+// ─── Bootstrap import with variable overrides ────────────────────────────
+// Full variable reference: node_modules/bootstrap/scss/_variables.scss
+//
+// To cherry-pick components and shrink output, replace the single @use below
+// with individual partials:
+//   @use "bootstrap/scss/functions";
+//   @use "bootstrap/scss/variables" with ($primary: …);
+//   @use "bootstrap/scss/mixins";
+//   @use "bootstrap/scss/grid";
+//   @use "bootstrap/scss/buttons";
+
+@use "bootstrap/scss/bootstrap" with (
+  $primary: #fbd605,
+  $body-bg: #100c05,
+  $body-color: #eee8d5,
+  $font-family-sans-serif: ("Inter", system-ui, -apple-system, sans-serif),
+  $border-radius: 0.5rem,
+  $form-file-button-bg: #100c05,
+  $form-file-button-color: #eee8d5,
+  $nav-tabs-link-active-color: #eee8d5,
+);
+
+// ─── Your own styles below ────────────────────────────────────────────────
+// .my-class { … }
+
+.form-control {
+  width: 100%;
+}
+
+img {
+  max-width: 100%;
+}

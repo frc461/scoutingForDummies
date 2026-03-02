@@ -1,6 +1,10 @@
 source "https://rubygems.org"
 
 gem "sinatra"
+gem "puma"
+gem "rackup"
 gem "sequel"
 gem "excon"
 gem "sqlite3"
+gem "dotenv"
+gem "overmind"

@@ -1,0 +1,6 @@
+<h1>Teams</h1>
+<ul>
+  <% @teams.each do |team| %>
+    <li><a href="/teams/<%= team[:number] %>"><%= team[:number] %> - <%= team[:name] %></a></li>
+  <% end %>
+</ul>

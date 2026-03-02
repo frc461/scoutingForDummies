@@ -1,0 +1,19 @@
+<h1>Team <%= @team[:number] %> - <%= @team[:name] %></h1>
+
+<h2>Notes</h2>
+<ul>
+  <% @notes.each do |note| %>
+    <li><%= note[:content] %></li>
+  <% end %>
+</ul>
+
+<h2>Photos</h2>
+<div class="row">
+  <% @photos.each do |photo| %>
+    <div class="col-6 col-md-3 mb-3">
+      <a href="/uploads/<%= photo[:filename] %>" target="_blank">
+        <img src="/uploads/<%= photo[:filename] %>" alt="Photo for team <%= @team[:number] %>" class="img-fluid">
+      </a>
+    </div>
+  <% end %>
+</div>

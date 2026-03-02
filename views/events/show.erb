@@ -1,0 +1,8 @@
+<h1><%= @event[:name] %></h1>
+
+<h2>Teams in Attendance</h2>
+<ul>
+  <% @teams.each do |team| %>
+    <li><a href="/teams/<%= team[:number] %>"><%= team[:number] %> - <%= team[:name] %></a></li>
+  <% end %>
+</ul>

@@ -1,0 +1,7 @@
+<h1>Events</h1>
+
+<ul>
+  <% @events.each do |event| %>
+    <li><a href="/events/<%= event[:code] %>"><%= event[:name] %></a></li>
+  <% end %>
+</ul>
