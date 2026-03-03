@@ -1,6 +1,6 @@
-    require_relative 'setup'
+require_relative 'setup'
 
-response = Excon.get('https://api.statbotics.io/v3/events?year=2025&district=fin')
+response = Excon.get("https://api.statbotics.io/v3/events?year=#{ENV['YEAR']}&district=fin")
 events = JSON.parse(response.body)
 
 events.each do |event|
