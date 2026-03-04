@@ -13,6 +13,9 @@
   $primary: #fbd605,
   $body-bg: #100c05,
   $body-color: #eee8d5,
+  $table-color: #eee8d5,
+  $card-bg: #eee8d5,
+  $card-color: #100c05,
   $font-family-sans-serif: ("Inter", system-ui, -apple-system, sans-serif),
   $border-radius: 0.5rem,
   $form-file-button-bg: #100c05,
@@ -29,4 +32,8 @@
 
 img {
   max-width: 100%;
+}
+
+.card {
+  color: #100c05 !important;
 }

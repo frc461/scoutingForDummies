@@ -1,8 +1,20 @@
 <h1><%= @event[:name] %></h1>
 
-<h2>Teams in Attendance</h2>
-<ul>
-  <% @teams.each do |team| %>
-    <li><a href="/teams/<%= team[:number] %>"><%= team[:number] %> - <%= team[:name] %></a></li>
-  <% end %>
-</ul>
+<div class="row">
+  <div class="col-md-6">
+    <h2>Matches</h2>
+    <ul>
+      <% @matches.each do |match| %>
+        <li><a href="/matches/<%= match[:code] %>"><%= match[:code] %></a> | <%= match[:time] %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col-md-6">
+    <h2>Teams in Attendance</h2>
+    <ul>
+      <% @teams.each do |team| %>
+        <li><a href="/teams/<%= team[:number] %>"><%= team[:number] %> - <%= team[:name] %></a></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

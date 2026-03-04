@@ -6,7 +6,10 @@ configure :production do
 end
 
 get "/" do
-  @teams = DB.from(:teams)
+  @matches = DB[:matches].join(:plays, match_code: :code).where(Sequel[:plays][:team_number] => ENV['TEAM']).select_all(:matches).order(:time).distinct
+  @next_match = @matches.where(status: 'Upcoming').first
+  @next_match_plays = DB[:plays].where(match_code: @next_match[:code]).join(:teams, number: :team_number).select(Sequel[:plays][:team_number], Sequel[:plays][:alliance], Sequel[:plays][:epa], Sequel[:teams][:name]) if @next_match
+  @next_match_prediction = JSON.parse(@next_match[:prediction])
   erb :index
 end
 
@@ -61,5 +64,12 @@ end
 get "/events/:code" do
   @event = DB[:events].where(code: params['code']).first
   @teams = DB[:attendance].where(event_id: @event[:id]).join(:teams, id: :team_id).select(Sequel[:teams][:number], Sequel[:teams][:name])
+  @matches = DB[:matches].where(event_id: @event[:id]).order(:time).all
   erb :'events/show'
+end
+
+get '/matches/:code' do
+  @match = DB[:matches].where(code: params[:code]).first
+  @plays = DB[:plays].where(match_code: params[:code]).join(:teams, number: :team_number).select(Sequel[:plays][:team_number], Sequel[:plays][:alliance], Sequel[:plays][:epa], Sequel[:teams][:name])
+  erb :'matches/show'
 end

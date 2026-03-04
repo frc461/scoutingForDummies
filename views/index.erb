@@ -13,3 +13,60 @@
     <a href="/photos/new" class="btn btn-primary w-100 mb-3">Add Photo</a>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-12 col-md-9">
+    <h2>Next Match</h2>
+    <% if @next_match %>
+      <div class="card mb-3">
+        <div class="card-header"><h3><%= @next_match[:code].split('_').last %> / <%= @next_match[:predicted_time] %></h3></div>
+        <div class="card-body">
+          <div class="row text-center">
+            <div class="col-6">
+              <h4>Red Alliance</h4>
+              <div class="row">
+                <% @next_match_plays.where(alliance: 'red').each do |play| %>
+                  <div class="col"><%= play[:team_number] %></div>
+                <% end %>
+              </div>
+            </div>
+            <div class="col-6">
+              <h4>Blue Alliance</h4>
+              <div class="row">
+                <% @next_match_plays.where(alliance: 'blue').each do |play| %>
+                  <div class="col"><%= play[:team_number] %></div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <div class="row text-center">
+            <div class="col-5">
+              xx
+            </div>
+            <div class="col-2">
+              <%= @next_match_prediction['winner'] %> 
+            </div>
+            <div class="col-5">
+              yy
+            </div>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <div>No upcoming matches for team <%= ENV['TEAM'] %>.</div>
+    <% end %>
+  </div>
+  <div class="col-12 col-md-3">
+    <h2>All Matches</h2>
+    <% if @matches.any? %>
+      <ul>
+        <% @matches.each do |match| %>
+          <li><a href="/matches/<%= match[:code] %>"><%= match[:code].split('_').last %></a></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div>No matches found for team <%= ENV['TEAM'] %>.</div>
+    <% end %>
+  </div>
+</div>

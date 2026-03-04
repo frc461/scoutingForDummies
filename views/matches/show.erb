@@ -1,0 +1,40 @@
+<h1><%= @match[:code] %></h1>
+
+<div class="row">
+  
+  <div class="col-md-6">
+    <h2>Predicted Time</h2>
+    <p><%= @match[:predicted_time] %></p>
+    <h2>Predicted Results</h2>
+    <pre><%= JSON.pretty_generate(JSON.parse(@match[:prediction])) %></pre>
+  </div>
+  <div class="col-md-6">
+    <h2>Status</h2>
+    <p><%= @match[:status] %></p>
+    <h2>Time</h2>
+    <p><%= @match[:time] %></p>
+    <h2>Results</h2>
+    <pre><%= JSON.pretty_generate(JSON.parse(@match[:real_results])) %></pre>
+  </div>
+</div>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Team Number</th>
+      <th>Team Name</th>
+      <th>Alliance</th>
+      <th>EPA</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @plays.each do |play| %>
+      <tr>
+        <td><a href="/teams/<%= play[:team_number] %>"><%= play[:team_number] %></a></td>
+        <td><%= play[:name] %></td>
+        <td><%= play[:alliance] %></td>
+        <td><pre><%= JSON.pretty_generate(JSON.parse(play[:epa])) %></pre></td>
+      </tr>
+    <% end %>
+  </tbody>

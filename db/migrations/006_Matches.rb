@@ -3,7 +3,8 @@ Sequel.migration do
     create_table(:matches) do
       primary_key :id
       String :code, null: false
-      Time :time, null: false
+      Time :time
+      Time :predicted_time
       Integer :event_id, null: false
       String :status, null: false
       String :prediction
