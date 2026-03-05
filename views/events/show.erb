@@ -5,7 +5,7 @@
     <h2>Matches</h2>
     <ul>
       <% @matches.each do |match| %>
-        <li><a href="/matches/<%= match[:code] %>"><%= match[:code] %></a> | <%= match[:time] %></li>
+        <li><a href="/matches/<%= match[:code] %>"><%= match[:code] %></a> | <%= match[:time].strftime("%l:%M %p")%></li>
       <% end %>
     </ul>
   </div>
