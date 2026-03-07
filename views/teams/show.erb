@@ -8,11 +8,61 @@
   <div class="col-md-6">
     <h2>Matches</h2>
     <% if @matches.any? %>
-      <ul>
         <% @matches.each do |match| %>
-          <li><a href="/matches/<%= match[:code] %>"><%= match[:code].split('_').last %></a> - <%= match[:status] %></li>
+        <div class="card mb-3">
+          <div class="card-header"><a href="/matches/<%= match[:code] %>"><%= match[:code].split('_').last %></a></div>
+          <div class="card-body">
+            <div class="row text-center align-items-center mb-1">
+              <div class="col-6">
+                <h4>Red Alliance</h4>
+                <div class="row" style="background-color: #ff000016">
+                  <% @all_plays.where(match_code: match[:code], alliance: 'red').each do |play| %>
+                    <div class="col <%= "fw-bolder" if play[:team_number].to_s == @team[:number].to_s %>"><%= play[:team_number] %></div>
+                  <% end %>
+                </div>
+              </div>
+              <div class="col-6">
+                <h4>Blue Alliance</h4>
+                <div class="row" style="background-color: #0000ff16">
+                  <% @all_plays.where(match_code: match[:code], alliance: 'blue').each do |play| %>
+                    <div class="col <%= "fw-bolder" if play[:team_number].to_s == @team[:number].to_s %>"><%= play[:team_number] %></div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <% actual = JSON.parse(match[:real_results]) %>
+            <% if actual[:winner] %>
+              <div class="row text-center align-items-center">
+                <div class="col-5">
+                  <%= actual['red_score']%>
+                </div>
+                <div class="col-2">
+                  <div><em>final</em></div>
+                  <%= actual['winner'] %> won
+                </div>
+                <div class="col-5">
+                  <%= actual['blue_score'] %>
+                </div>
+              </div>
+            <% else %>
+              <% prediction = JSON.parse(match[:prediction]) %>
+              <div class="row text-center align-items-center bg-dark text-light">
+                <div class="col-5">
+                  <%= prediction['red_score']%>
+                </div>
+                <div class="col-2">
+                  <div><em>predicted</em></div>
+                  <%= prediction['winner'] %> to win
+                </div>
+                <div class="col-5">
+                  <%= prediction['blue_score'] %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
         <% end %>
-      </ul>
     <% else %>
       <div>No matches found for team <%= @team[:number] %>.</div>
     <% end %>

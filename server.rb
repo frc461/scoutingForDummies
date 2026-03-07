@@ -24,7 +24,9 @@ get '/teams/:number' do
   @team = DB.from(:teams).where(number: params[:number]).first
   @notes = DB.from(:notes).where(team_number: params[:number])
   @photos = DB.from(:photos).where(team_number: params[:number])
-  @matches = DB[:plays].where(team_number: params[:number]).join(:matches, code: :match_code).select(Sequel[:matches][:code], Sequel[:matches][:time], Sequel[:matches][:status], Sequel[:matches][:prediction], Sequel[:matches][:real_results], Sequel[:plays][:alliance], Sequel[:plays][:epa]).order(:time)
+  @plays = DB[:plays].where(team_number: params[:number])
+  @matches = @plays.join(:matches, code: :match_code).select(Sequel[:matches][:code], Sequel[:matches][:time], Sequel[:matches][:status], Sequel[:matches][:prediction], Sequel[:matches][:real_results], Sequel[:plays][:alliance], Sequel[:plays][:epa]).order(:time)
+  @all_plays = DB[:plays].where(match_code: @matches.map { |m| m[:code] })
   erb :'teams/show'
 end
 
