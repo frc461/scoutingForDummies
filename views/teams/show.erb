@@ -1,5 +1,6 @@
-<meta name="turbo-refresh-interval" content="150000">
-<meta name="turbo-refresh-scroll" content="preserve">
+<script>
+  setTimeout(() => Turbo.visit(window.location.href, { action: "replace" }), 150000);
+</script>
 
 <h1>Team <%= @team[:number] %> - <%= @team[:name] %></h1>
 
