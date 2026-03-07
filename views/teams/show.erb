@@ -1,19 +1,38 @@
+<meta name="turbo-refresh-interval" content="150000">
+<meta name="turbo-refresh-scroll" content="preserve">
+
 <h1>Team <%= @team[:number] %> - <%= @team[:name] %></h1>
 
-<h2>Notes</h2>
-<ul>
-  <% @notes.each do |note| %>
-    <li><%= note[:content] %></li>
-  <% end %>
-</ul>
-
-<h2>Photos</h2>
 <div class="row">
-  <% @photos.each do |photo| %>
-    <div class="col-6 col-md-3 mb-3">
-      <a href="/uploads/<%= photo[:filename] %>" target="_blank">
-        <img src="/uploads/<%= photo[:filename] %>" alt="Photo for team <%= @team[:number] %>" class="img-fluid">
-      </a>
+  <div class="col-md-6">
+    <h2>Matches</h2>
+    <% if @matches.any? %>
+      <ul>
+        <% @matches.each do |match| %>
+          <li><a href="/matches/<%= match[:code] %>"><%= match[:code].split('_').last %></a> - <%= match[:status] %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div>No matches found for team <%= @team[:number] %>.</div>
+    <% end %>
+  </div>
+  <div class="col-md-6">
+    <h2>Notes</h2>
+    <ul>
+      <% @notes.each do |note| %>
+        <li><%= note[:content] %></li>
+      <% end %>
+    </ul>
+
+    <h2>Photos</h2>
+    <div class="row">
+      <% @photos.each do |photo| %>
+        <div class="col-6 col-md-3 mb-3">
+          <a href="/uploads/<%= photo[:filename] %>" target="_blank">
+            <img src="/uploads/<%= photo[:filename] %>" alt="Photo for team <%= @team[:number] %>" class="img-fluid">
+          </a>
+        </div>
+      <% end %>
     </div>
-  <% end %>
+  </div>
 </div>

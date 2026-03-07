@@ -8,8 +8,10 @@ end
 get "/" do
   @matches = DB[:matches].join(:plays, match_code: :code).where(Sequel[:plays][:team_number] => ENV['TEAM']).select_all(:matches).order(:time).distinct
   @next_match = @matches.where(status: 'Upcoming').first
-  @next_match_plays = DB[:plays].where(match_code: @next_match[:code]).join(:teams, number: :team_number).select(Sequel[:plays][:team_number], Sequel[:plays][:alliance], Sequel[:plays][:epa], Sequel[:teams][:name]) if @next_match
-  @next_match_prediction = JSON.parse(@next_match[:prediction])
+  if @next_match
+    @next_match_plays = DB[:plays].where(match_code: @next_match[:code]).join(:teams, number: :team_number).select(Sequel[:plays][:team_number], Sequel[:plays][:alliance], Sequel[:plays][:epa], Sequel[:teams][:name])
+    @next_match_prediction = JSON.parse(@next_match[:prediction])
+  end
   erb :index
 end
 
@@ -22,6 +24,7 @@ get '/teams/:number' do
   @team = DB.from(:teams).where(number: params[:number]).first
   @notes = DB.from(:notes).where(team_number: params[:number])
   @photos = DB.from(:photos).where(team_number: params[:number])
+  @matches = DB[:plays].where(team_number: params[:number]).join(:matches, code: :match_code).select(Sequel[:matches][:code], Sequel[:matches][:time], Sequel[:matches][:status], Sequel[:matches][:prediction], Sequel[:matches][:real_results], Sequel[:plays][:alliance], Sequel[:plays][:epa]).order(:time)
   erb :'teams/show'
 end
 
