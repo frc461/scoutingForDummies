@@ -70,6 +70,7 @@ get "/events/:code" do
   @event = DB[:events].where(code: params['code']).first
   @teams = DB[:attendance].where(event_id: @event[:id]).join(:teams, id: :team_id).select(Sequel[:teams][:number], Sequel[:teams][:name])
   @matches = DB[:matches].where(event_id: @event[:id]).order(:time).all
+  @notes = DB[:notes].where(team_number: @teams.map { |t| t[:number] }).join(:teams, number: :team_number).select(Sequel[:notes][:team_number], Sequel[:notes][:content], Sequel[:teams][:name])
   erb :'events/show'
 end
 
