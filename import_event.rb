@@ -3,7 +3,7 @@ require_relative 'setup'
 # event_response = Excon.get("https://api.statbotics.io/v3/event/#{ENV['YEAR']}#{ENV['EVENT']}")
 # event_data = JSON.parse(event_response.body)
 
-# event = DB[:events].where(code: "#{ENV['YEAR']}#{ENV['EVENT']}").first
+ event = DB[:events].where(code: "#{ENV['YEAR']}#{ENV['EVENT']}").first
 # unless event
 #     puts "Event #{ENV['YEAR']}#{ENV['EVENT']} not found in the database! Creating..."
 #     begin
