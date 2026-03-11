@@ -59,12 +59,12 @@ matches = JSON.parse(matches_response.body)
 matches.each do |match|
     unless DB[:matches].where(code: match['key']).empty?
         puts "Match #{match['key']} already exists in the database!"
-        DB[:matches].where(code: match['key']).update(time: match['time'], predicted_time: match['predicted_time'], status: match['status'], prediction: match['pred'].to_json, real_results: match['result'].to_json, event_id: ENV['EVENT'])
+        DB[:matches].where(code: match['key']).update(time: match['time'], predicted_time: match['predicted_time'], status: match['status'], prediction: match['pred'].to_json, real_results: match['result'].to_json, event_id: event[:id])
         next
     end
     begin
         p match['key']
-        DB[:matches].insert(code: match['key'], time: match['time'], predicted_time: match['predicted_time'], status: match['status'], prediction: match['pred'].to_json, real_results: match['result'].to_json, event_id: ENV['EVENT'])
+        DB[:matches].insert(code: match['key'], time: match['time'], predicted_time: match['predicted_time'], status: match['status'], prediction: match['pred'].to_json, real_results: match['result'].to_json, event_id: event[:id])
     rescue => e
         puts "Problem with #{match}!"
         binding.irb
