@@ -64,6 +64,7 @@ end
 get "/events" do
   @events = DB[:events].all
   erb :'events/index'
+  
 end
 
 get "/events/:code" do
@@ -77,5 +78,6 @@ end
 get '/matches/:code' do
   @match = DB[:matches].where(code: params[:code]).first
   @plays = DB[:plays].where(match_code: params[:code]).join(:teams, number: :team_number).select(Sequel[:plays][:team_number], Sequel[:plays][:alliance], Sequel[:plays][:epa], Sequel[:teams][:name])
+  @match_prediction = JSON.parse(@match[:prediction])
   erb :'matches/show'
 end

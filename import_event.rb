@@ -4,50 +4,53 @@ require_relative 'setup'
 # event_data = JSON.parse(event_response.body)
 
  event = DB[:events].where(code: "#{ENV['YEAR']}#{ENV['EVENT']}").first
-# unless event
-#     puts "Event #{ENV['YEAR']}#{ENV['EVENT']} not found in the database! Creating..."
-#     begin
-#         DB[:events].insert(name: event_data['name'], code: event_data['key'])
-#         event = DB[:events].where(code: "#{ENV['YEAR']}#{ENV['EVENT']}").first
-#     rescue => e
-#         puts "Problem with creating event #{ENV['YEAR']}#{ENV['EVENT']}!"
-#         binding.irb
-#     end
-# end
+unless event
+    puts "Event #{ENV['YEAR']}#{ENV['EVENT']} not found in the database! Creating..."
+    begin
+        event_response = Excon.get("https://api.statbotics.io/v3/event/#{ENV['YEAR']}#{ENV['EVENT']}")
+        event_data = JSON.parse(event_response.body)
+        
+        DB[:events].insert(name: event_data['name'], code: event_data['key'])
+        event = DB[:events].where(code: "#{ENV['YEAR']}#{ENV['EVENT']}").first
+    rescue => e
+        puts "Problem with creating event #{ENV['YEAR']}#{ENV['EVENT']}!"
+        binding.irb
+    end
+end
 
-# teams_response = Excon.get("https://api.statbotics.io/v3/team_events?event=#{ENV['YEAR']}#{ENV['EVENT']}")
-# begin
-# teams = JSON.parse(teams_response.body)
-# rescue => e
-#     puts "Problem with fetching teams for event #{ENV['YEAR']}#{ENV['EVENT']}!"
-#     binding.irb
-# end
+teams_response = Excon.get("https://api.statbotics.io/v3/team_events?event=#{ENV['YEAR']}#{ENV['EVENT']}")
+begin
+teams = JSON.parse(teams_response.body)
+rescue => e
+    puts "Problem with fetching teams for event #{ENV['YEAR']}#{ENV['EVENT']}!"
+    binding.irb
+end
 
-# teams.each do |team|
-#     db_team = DB[:teams].where(number: team['team']).first
-#     unless db_team
-#         puts "Team #{team['team']} not found in the database! Creating..."
-#         team_response = Excon.get("https://api.statbotics.io/v3/team/#{team['team']}")
-#         team_data = JSON.parse(team_response.body)
-#         begin
-#         DB[:teams].insert(name: team_data['name'], number: team_data['team'], play_style: '?')
-#         db_team = DB[:teams].where(number: team['team']).first
-#         rescue => e
-#             puts "Problem with creating team #{team['team']}!"
-#             binding.irb
-#         end
-#     end
-#     unless DB[:attendance].where(team_id: db_team[:id], event_id: event[:id]).empty?
-#         puts "Team #{team['team']} already marked as attending #{event_data['name']}!"
-#         next
-#     end
-#     begin
-#         DB[:attendance].insert(team_id: db_team[:id], event_id: event[:id])
-#     rescue => e
-#         puts "Problem with attendance for team #{team['team']} at event #{event_data['name']}!"
-#         next
-#     end
-# end
+teams.each do |team|
+    db_team = DB[:teams].where(number: team['team']).first
+    unless db_team
+        puts "Team #{team['team']} not found in the database! Creating..."
+        team_response = Excon.get("https://api.statbotics.io/v3/team/#{team['team']}")
+        team_data = JSON.parse(team_response.body)
+        begin
+        DB[:teams].insert(name: team_data['name'], number: team_data['team'], play_style: '?')
+        db_team = DB[:teams].where(number: team['team']).first
+        rescue => e
+            puts "Problem with creating team #{team['team']}!"
+            binding.irb
+        end
+    end
+    unless DB[:attendance].where(team_id: db_team[:id], event_id: event[:id]).empty?
+        puts "Team #{team['team']} already marked as attending #{event_data['name']}!"
+        next
+    end
+    begin
+        DB[:attendance].insert(team_id: db_team[:id], event_id: event[:id])
+    rescue => e
+        puts "Problem with attendance for team #{team['team']} at event #{event_data['name']}!"
+        next
+    end
+end
 
 matches_response = Excon.get("https://api.statbotics.io/v3/matches?event=#{ENV['YEAR']}#{ENV['EVENT']}")
 if matches_response.status != 200
