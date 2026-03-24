@@ -30,6 +30,16 @@ get '/teams/:number' do
   erb :'teams/show'
 end
 
+get "/teams/:number/edit" do
+   @team = DB.from(:teams).where(number: params[:number]).first
+   erb :'teams/edit'
+end
+
+post "/teams/:number" do
+  @team = DB.from(:teams).where(number: params[:number]).update(play_style: params[:play_style]) 
+  redirect "/teams/#{params[:number]}"
+end
+
 get "/notes/new" do
   @team_number = params['team_number']
   erb :'notes/new'

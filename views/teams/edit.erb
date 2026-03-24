@@ -1,0 +1,13 @@
+<h1>Edit Team</h1>
+<form action="/teams/<%= @team[:number] %>" method="post">
+  <div class="mb-3">
+    <label for="team_number">Team Number</label>
+    <input id="team_number" value="<%= @team[:number] %>" name="team_number" type="number" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label for="play_style">Play-style</label>
+    <input id="play_style" value="<%= @team[:play_style] %>" name="play_style" class="form-control">
+  </div>
+  
+  <button class="btn btn-lg btn-primary w-100 mt-3">Submit</button>
+</form>
