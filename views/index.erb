@@ -65,8 +65,11 @@
     <h2>All Matches</h2>
     <% if @matches.any? %>
       <ul>
-        <% @matches.each do |match| %>
-          <li><a href="/matches/<%= match[:code] %>"><%= match[:code].split('_').last %></a></li>
+        <% @matches.group_by { |m| m[:event_id] }.each do |event_id, matches| %>
+          <h3><%= DB[:events].where(id: event_id).first[:name] %></h3>
+          <% matches.each do |match| %>
+            <li><a href="/matches/<%= match[:code] %>"><%= match[:code].split('_').last %></a></li>
+          <% end %>
         <% end %>
       </ul>
     <% else %>

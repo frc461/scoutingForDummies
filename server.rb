@@ -12,6 +12,7 @@ get "/" do
     @next_match_plays = DB[:plays].where(match_code: @next_match[:code]).join(:teams, number: :team_number).select(Sequel[:plays][:team_number], Sequel[:plays][:alliance], Sequel[:plays][:epa], Sequel[:teams][:name])
     @next_match_prediction = JSON.parse(@next_match[:prediction])
   end
+  @matches = @matches.to_a
   erb :index
 end
 
@@ -52,6 +53,16 @@ post "/note" do
   else
     redirect "/"
   end
+end
+
+get "/notes/:id/edit" do
+   @note = DB.from(:notes).where(id: params[:id]).first
+   erb :'notes/edit'
+end
+
+post "/notes/:id" do
+  @note = DB.from(:notes).where(id: params[:id]).update(content: params[:content],team_number: params[:team_number], event_id: params[:event_id]) 
+  redirect "/teams/#{params[:team_number]}"
 end
 
 get "/photos/new" do

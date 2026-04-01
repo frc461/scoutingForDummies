@@ -1,0 +1,17 @@
+<h1>Edit Note</h1>
+<form action="/notes/<%= @note[:id] %>" method="post">
+  <div class="mb-3">
+    <label for="team_number">Team Number</label>
+    <input id="team_number" value="<%= @note[:team_number] %>" name="team_number" type="number" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label for="content">Note Content</label>
+    <textarea id="content" name="content" rows="7" class="form-control"><%= @note[:content] %></textarea>
+  </div>
+    <div class="mb-3">
+    <label for="event_id">Event Name</label>
+    <input id="event_id" value="<%= @note[:event_id] %>" name="event_id" type="number" class="form-control">
+  </div>
+
+  <button class="btn btn-lg btn-primary w-100 mt-3">Submit</button>
+</form>
