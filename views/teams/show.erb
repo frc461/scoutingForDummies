@@ -68,13 +68,16 @@
     <% end %>
   </div>
   <div class="col-md-6">
+    <a href="/teams/<%= @team[:number] %>/edit" class="btn btn-warning" >edit</a>
     <h2>Notes</h2>
-    <ul>
-      <% @notes.each do |note| %>
-        <li><%= note[:content] %></li>
-      <% end %>
-    </ul>
-
+    <% @notes.to_a.group_by { |m| m[:event_id] }.each do |event_id, notes| %>
+      <h3><%= DB[:events].where(id: event_id).first[:name] %></h3>
+      <ul>
+        <% notes.each do |note| %>
+          <li><%= note[:content] %></li>
+        <% end %>
+      </ul>
+    <% end %>
     <h2>Photos</h2>
     <div class="row">
       <% @photos.each do |photo| %>
@@ -88,4 +91,3 @@
   </div>
 </div>
 
-<a href="/teams/<%= @team[:number] %>/edit" class="btn btn-warning" >edit</a>

@@ -37,7 +37,7 @@ get "/teams/:number/edit" do
 end
 
 post "/teams/:number" do
-  @team = DB.from(:teams).where(number: params[:number]).update(play_style: params[:play_style]) 
+  @team = DB.from(:teams).where(number: params[:number]).update(play_style: params[:play_style], name: params[:name]) 
   redirect "/teams/#{params[:number]}"
 end
 
@@ -47,7 +47,7 @@ get "/notes/new" do
 end
 
 post "/note" do
-  DB[:notes].insert(team_number: params['team_number'], content: params['content'])  
+  DB[:notes].insert(team_number: params['team_number'], content: params['content'], event_id: params[:event_id])  
   if params["team_number"].downcase == "boom" && params["content"].downcase == "boom"
     erb :BOOM
   else
